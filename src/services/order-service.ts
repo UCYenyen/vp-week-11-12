@@ -2,13 +2,14 @@ import { prismaClient } from "../utils/database-util";
 import { ResponseError } from "../error/response-error";
 import { Validation } from "../validations/validation";
 import { OrderValidation } from "../validations/order-validation";
+import { OrderRequest } from "../models/order-request";
 
 export class OrderService {
     
-    static async create(userId: number, request: any) {
+    static async create(userId: number, request: OrderRequest) {
         const validatedData = Validation.validate(
             OrderValidation.CREATE,
-            request
+            request.body
         );
 
         const restaurant = await prismaClient.restaurant.findUnique({

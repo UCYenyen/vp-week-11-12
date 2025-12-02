@@ -7,6 +7,6 @@ export class OrderValidation {
     });
     static readonly UPDATE: ZodType = z.object({
         itemCount: z.number().int().positive("Item count must be at least 1").optional(),
-        status: z.enum(['DELIVERING', 'COMPLETED']).optional(),
+        status: z.enum(['PENDING', 'COMPLETED', 'CANCELED']).optional(),
     });
 }
