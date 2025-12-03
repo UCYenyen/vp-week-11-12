@@ -12,11 +12,20 @@ export class OrderService {
             request.body
         );
 
+        // Check if customer exists
+        const customer = await prismaClient.customer.findUnique({
+            where: { id: userId }
+        });
+
+        if (!customer) throw new ResponseError(404, "Customer not found");
+
+        // Check if restaurant exists
         const restaurant = await prismaClient.restaurant.findUnique({
             where: { id: validatedData.restaurantId }
         });
 
         if (!restaurant) throw new ResponseError(404, "Restaurant not found");
+        
         if (restaurant.status === 'CLOSED') throw new ResponseError(400, "Restaurant is closed");
 
         return await prismaClient.order.create({
@@ -43,6 +52,7 @@ export class OrderService {
             estimatedArrivalMinutes: (order.itemCount * 10) + 10
         }));
     }
+    
     static async get(id: number, request: OrderRequest) {
         const order = await prismaClient.order.findUnique({
             where: { id },

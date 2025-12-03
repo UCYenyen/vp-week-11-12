@@ -30,8 +30,8 @@ model Order {
   restaurantId Int
   customerId   Int
   itemCount    Int
-  customer     Customer    @relation(fields: [customerId], references: [id])
-  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id])
+  customer     Customer    @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  restaurant   Restaurant  @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
 }
 
 enum RestaurantStatus {
