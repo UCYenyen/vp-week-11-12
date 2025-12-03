@@ -5,7 +5,7 @@ import { CustomerRequest } from "../models/customer-request-model"
 export class CustomerController {
     static async create(req: CustomerRequest, res: Response, next: NextFunction) {
         try {
-            const response = await CustomerService.create(req)
+            const response = await CustomerService.create(req.body)
             res.status(200).json({ data: response })
         } catch (error) {
             next(error)
@@ -19,6 +19,15 @@ export class CustomerController {
                 return res.status(400).json({ message: "Missing customer id" })
             }
             const response = await CustomerService.get(id)
+            res.status(200).json({ data: response })
+        } catch (error) {
+            next(error)
+        }
+    }
+
+    static async list(req: CustomerRequest, res: Response, next: NextFunction) {
+        try {
+            const response = await CustomerService.list()
             res.status(200).json({ data: response })
         } catch (error) {
             next(error)

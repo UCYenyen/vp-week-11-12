@@ -43,7 +43,7 @@ export class OrderService {
             estimatedArrivalMinutes: (order.itemCount * 10) + 10
         }));
     }
-    static async get(id: number, request: any) {
+    static async get(id: number, request: OrderRequest) {
         const order = await prismaClient.order.findUnique({
             where: { id },
             include: {

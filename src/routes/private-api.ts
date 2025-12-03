@@ -4,7 +4,9 @@ import { RestaurantController } from "../controllers/restaurant-controller";
 import { OrderController } from "../controllers/order-controller";
 
 export const privateRouter = express.Router();
-privateRouter.get("/customer", CustomerController.get);
+
+privateRouter.post("/customer", CustomerController.create);
+privateRouter.get("/customers", CustomerController.list);
 privateRouter.get("/customer/:id", CustomerController.get);
 privateRouter.put("/customer/:id", CustomerController.update);
 privateRouter.delete("/customer/:id", CustomerController.delete);
@@ -15,7 +17,6 @@ privateRouter.get("/restaurants/:id", RestaurantController.get);
 privateRouter.put("/restaurants/:id", RestaurantController.update);
 privateRouter.delete("/restaurants/:id", RestaurantController.delete);
 
-privateRouter.post("/orders", OrderController.create);
 privateRouter.post("/orders", OrderController.create);
 privateRouter.get("/orders", OrderController.list);
 privateRouter.get("/orders/:id", OrderController.get);

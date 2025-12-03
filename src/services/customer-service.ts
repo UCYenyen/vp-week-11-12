@@ -3,13 +3,12 @@ import { prismaClient } from "../utils/database-util";
 import { UserValidation } from "../validations/customer-validation";
 import { Validation } from "../validations/validation";
 import { Customer } from "../models/customer-model";
-import { CustomerRequest } from "../models/customer-request-model";
 
 export class CustomerService {
-  static async create(request: CustomerRequest): Promise<Customer> {
+  static async create(data: { name: string; phone: string }): Promise<Customer> {
     const validatedData = Validation.validate(
       UserValidation.CREATE,
-      request.body
+      data
     );
 
     const phone = await prismaClient.customer.findFirst({
@@ -24,7 +23,7 @@ export class CustomerService {
 
     return await prismaClient.customer.create({
       data: {
-        name: validatedData.username,
+        name: validatedData.name,
         phone: validatedData.phone,
       },
     });
@@ -43,14 +42,18 @@ export class CustomerService {
     if (!customer) throw new ResponseError(404, "Customer not found");
     return customer;
   }
+  
+  static async list(): Promise<Customer[]> {
+    return await prismaClient.customer.findMany();
+  }
 
-  static async update(id: string, request: any): Promise<Customer> {
+  static async update(id: string, data: { name?: string; phone?: string }): Promise<Customer> {
     const customerId = parseInt(id);
     if (isNaN(customerId)) {
       throw new ResponseError(400, "Invalid customer ID");
     }
 
-    const validatedData = Validation.validate(UserValidation.UPDATE, request);
+    const validatedData = Validation.validate(UserValidation.UPDATE, data);
 
     const customerCheck = await prismaClient.customer.findUnique({
       where: { id: customerId },
@@ -58,13 +61,13 @@ export class CustomerService {
 
     if (!customerCheck) throw new ResponseError(404, "Customer not found");
 
-    const data: any = {};
-    if (validatedData.username) data.name = validatedData.username;
-    if (validatedData.phone) data.phone = validatedData.phone;
+    const updateData: any = {};
+    if (validatedData.name) updateData.name = validatedData.name;
+    if (validatedData.phone) updateData.phone = validatedData.phone;
 
     return await prismaClient.customer.update({
       where: { id: customerId },
-      data: data,
+      data: updateData,
     });
   }
 

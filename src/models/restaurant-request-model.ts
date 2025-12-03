@@ -1,9 +1,9 @@
-import { Request } from 'express';
+import { Request } from "express";
 
-export interface RestaurantRequest extends Request{
-    restaurant?: {
-        id: number;
-        name: string;
-        description: string;
-    };
+export interface RestaurantRequest extends Request {
+  body: {
+    name: string;
+    description: string;
+    status?: string;
+  };
 }

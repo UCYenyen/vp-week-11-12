@@ -3,19 +3,21 @@ import { ResponseError } from "../error/response-error";
 import { Validation } from "../validations/validation";
 import { RestaurantValidation } from "../validations/restaurant-validation";
 import { RestaurantStatus } from "../../generated/prisma/client";
-import { RestaurantRequest } from "../models/restaurant-request-model";
-import { Restaurant } from "../models/restaurant-model";
 
 export class RestaurantService {
     
-    static async create(request: Restaurant) {
+    static async create(data: { name: string; description: string; status?: string }) {
         const validatedData = Validation.validate(
             RestaurantValidation.CREATE,
-            request
+            data
         );
 
         return await prismaClient.restaurant.create({
-            data: validatedData
+            data: {
+                name: validatedData.name,
+                description: validatedData.description,
+                status: validatedData.status as RestaurantStatus
+            }
         });
     }
 
@@ -24,7 +26,8 @@ export class RestaurantService {
             where: filters
         });
     }
-    static async get(id: number, request: RestaurantRequest) {
+    
+    static async get(id: number) {
         const restaurant = await prismaClient.restaurant.findUnique({
             where: { id }
         });
@@ -33,18 +36,23 @@ export class RestaurantService {
         return restaurant;
     }
     
-    static async update(id: number, request: RestaurantRequest) {
+    static async update(id: number, data: { name?: string; description?: string; status?: string }) {
         const validatedData = Validation.validate(
             RestaurantValidation.UPDATE,
-            request
+            data
         );
 
         const check = await prismaClient.restaurant.findUnique({ where: { id }});
         if(!check) throw new ResponseError(404, "Restaurant not found");
 
+        const updateData: any = {};
+        if (validatedData.name !== undefined) updateData.name = validatedData.name;
+        if (validatedData.description !== undefined) updateData.description = validatedData.description;
+        if (validatedData.status !== undefined) updateData.status = validatedData.status as RestaurantStatus;
+
         return await prismaClient.restaurant.update({
             where: { id },
-            data: validatedData
+            data: updateData
         });
     }
 
