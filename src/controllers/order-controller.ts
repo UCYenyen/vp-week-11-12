@@ -47,7 +47,7 @@ export class OrderController {
         try {
             const id = parseInt(req.params.id);
             await OrderService.delete(id);
-            res.status(200).json({ data: "OK" });
+            res.status(200).json({ data: "Order with id " + id + " deleted successfully" });
         } catch (e) { next(e); }
     }
 }
