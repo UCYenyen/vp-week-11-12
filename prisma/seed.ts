@@ -67,11 +67,7 @@ async function main() {
     ],
   }); 
 
-  console.log("Seed completed:", { 
-    customer: customer,
-    restaurant: restaurant,
-    orders: orders,
-  });
+  console.log("Seed completed:", "customers:", customer.count, "restaurants:", restaurant.count, "orders:", orders.count);
 }
 
 main()

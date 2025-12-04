@@ -3,6 +3,7 @@ import { ResponseError } from "../error/response-error";
 import { Validation } from "../validations/validation";
 import { OrderValidation } from "../validations/order-validation";
 import { OrderRequest } from "../models/order-request";
+import { toOrderResponse } from "../models/order-model";
 
 export class OrderService {
     
@@ -17,7 +18,7 @@ export class OrderService {
         });
 
         if (!customer) throw new ResponseError(404, "Customer not found");
-        
+
         const restaurant = await prismaClient.restaurant.findUnique({
             where: { id: validatedData.restaurantId }
         });
@@ -31,7 +32,8 @@ export class OrderService {
                 customerId: userId,
                 restaurantId: validatedData.restaurantId,
                 itemCount: validatedData.itemCount,
-                status: 'PENDING'
+                status: 'PENDING',
+                orderedAt: new Date()
             }
         });
     }
@@ -45,9 +47,8 @@ export class OrderService {
             }
         });
 
-        return orders.map((order: { itemCount: number; }) => ({
-            ...order,
-            estimatedArrivalMinutes: (order.itemCount * 10) + 10
+        return orders.map((order) => ({
+            ...toOrderResponse(order)
         }));
     }
     
@@ -61,8 +62,10 @@ export class OrderService {
         });
         
         if(!order) throw new ResponseError(404, "Order not found");
-        return order;
+        
+        return toOrderResponse(order);
     }
+
     static async delete(id: number) {
         const check = await prismaClient.order.findUnique({ where: { id }});
         if(!check) throw new ResponseError(404, "Order not found");

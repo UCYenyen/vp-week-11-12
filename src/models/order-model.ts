@@ -11,7 +11,7 @@ export interface OrderResponse {
     id: number; 
     itemsAmount: number;
     orderTime: string;
-    eta: number;
+    estimatedArrivalTime: number;
     customerId: number; 
     restaurantId: number; 
     customerName?: string;
@@ -29,7 +29,7 @@ export function toOrderResponse(order: OrderWithRelations): OrderResponse {
         id: order.id,
         itemsAmount: order.itemCount,
         orderTime: order.orderedAt.toISOString(),
-        eta: (order.itemCount * 10) + 10,
+        estimatedArrivalTime: (order.itemCount * 10) + 10,
         customerId: order.customerId,
         restaurantId: order.restaurantId,
         customerName: order.customer?.name,
