@@ -6,16 +6,16 @@ async function main() {
   const customer = await prisma.customer.createMany({
     data: [
       {
-        name: "Bryan",
-        phone: "1234567890",
+        name: "Bryan chef",
+        phone: "6283233837164",
       },
       {
-        name: "Tezies",
-        phone: "0987654321",
+        name: "Tezies chef",
+        phone: "6282231837162",
       },
       {
-        name: "Tunashawarma",
-        phone: "5555555555",
+        name: "Tuna chef",
+        phone: "+6281231847161",
       },
     ],
   });
@@ -23,15 +23,15 @@ async function main() {
   const restaurant = await prisma.restaurant.createMany({
     data: [
       {
-        name: "Bryan's Burgers",
+        name: "Kazuto's Burgers",
         description: "1112223333",
       },
       {
-        name: "Tezies Tacos",
+        name: "Saizo Tacos",
         description: "4445556666",
       },
       {
-        name: "Tunashawarma Grill",
+        name: "Tuni Grill",
         description: "7778889999",
       },
     ],

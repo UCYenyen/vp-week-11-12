@@ -61,13 +61,22 @@ export class CustomerService {
 
     if (!customerCheck) throw new ResponseError(404, "Customer not found");
 
-    const updateData: any = {};
-    if (validatedData.name) updateData.name = validatedData.name;
-    if (validatedData.phone) updateData.phone = validatedData.phone;
+    if(validatedData) {
+      const phoneExists = await prismaClient.customer.findFirst({
+        where: {
+          phone: validatedData.phone,
+          NOT: { id: customerId },
+        },
+      });
+
+      if (phoneExists) {
+        throw new ResponseError(400, "Phone has already existed!");
+      }
+    } 
 
     return await prismaClient.customer.update({
       where: { id: customerId },
-      data: updateData,
+      data: validatedData,
     });
   }
 

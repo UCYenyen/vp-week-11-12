@@ -20,5 +20,4 @@ privateRouter.delete("/restaurants/:id", RestaurantController.delete);
 privateRouter.post("/order", OrderController.create);
 privateRouter.get("/orders", OrderController.list);
 privateRouter.get("/order/:id", OrderController.get);
-privateRouter.put("/order/:id", OrderController.update);
 privateRouter.delete("/order/:id", OrderController.delete);

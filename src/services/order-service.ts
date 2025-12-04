@@ -12,14 +12,12 @@ export class OrderService {
             request.body
         );
 
-        // Check if customer exists
         const customer = await prismaClient.customer.findUnique({
             where: { id: userId }
         });
 
         if (!customer) throw new ResponseError(404, "Customer not found");
-
-        // Check if restaurant exists
+        
         const restaurant = await prismaClient.restaurant.findUnique({
             where: { id: validatedData.restaurantId }
         });
@@ -65,22 +63,6 @@ export class OrderService {
         if(!order) throw new ResponseError(404, "Order not found");
         return order;
     }
-    
-    static async update(id: number, request: any) {
-        const validatedData = Validation.validate(
-            OrderValidation.UPDATE,
-            request
-        );
-
-        const check = await prismaClient.order.findUnique({ where: { id }});
-        if(!check) throw new ResponseError(404, "Order not found");
-
-        return await prismaClient.order.update({
-            where: { id },
-            data: validatedData
-        });
-    }
-
     static async delete(id: number) {
         const check = await prismaClient.order.findUnique({ where: { id }});
         if(!check) throw new ResponseError(404, "Order not found");
