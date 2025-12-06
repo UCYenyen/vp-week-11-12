@@ -24,15 +24,15 @@ async function main() {
     data: [
       {
         name: "Kazuto's Burgers",
-        description: "1112223333",
+        description: "Burger kazuto adalah sebuah restaurant yang menjual burger yang enak",
       },
       {
         name: "Saizo Tacos",
-        description: "4445556666",
+        description: "Tacos saizo adalah sebuah restaurant yang menjual tacos yang enak",
       },
       {
         name: "Tuni Grill",
-        description: "7778889999",
+        description: "Tuni grill adalah sebuah restaurant yang menjual grill yang enak",
       },
     ],
   });
